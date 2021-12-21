@@ -128,13 +128,9 @@ let Notify_NoCKFalse = "false";
 let Notify_NoLoginSuccess = "false";
 let UseGroupNotify = 1;
 const {
-<<<<<<< HEAD
-	getEnvs
-=======
     getEnvs,
     DisableCk,
     getEnvByPtPin
->>>>>>> upstream/main
 } = require('./ql');
 const fs = require('fs');
 let strCKFile = '/ql/scripts/CKName_cache.json';
