@@ -1957,112 +1957,6 @@ function ChangeUserId(desp) {
 }
 
 function qywxamNotify(text, desp) {
-<<<<<<< HEAD
-	return new Promise((resolve) => {
-		if (QYWX_AM) {
-			const QYWX_AM_AY = QYWX_AM.split(',');
-			const options_accesstoken = {
-				url: `https://qyapi.weixin.qq.com/cgi-bin/gettoken`,
-				json: {
-					corpid: `${QYWX_AM_AY[0]}`,
-					corpsecret: `${QYWX_AM_AY[1]}`,
-				},
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				timeout,
-			};
-			$.post(options_accesstoken, (err, resp, data) => {
-				html = desp.replace(/\n/g, '<br/>');
-				var json = JSON.parse(data);
-				accesstoken = json.access_token;
-				let options;
-
-				switch (QYWX_AM_AY[4]) {
-				case '0':
-					options = {
-						msgtype: 'textcard',
-						textcard: {
-							title: `${text}`,
-							description: `${desp}`,
-							url: 'https://github.com/whyour/qinglong',
-							btntxt: '更多',
-						},
-					};
-					break;
-
-				case '1':
-					options = {
-						msgtype: 'text',
-						text: {
-							content: `${text}\n\n${desp}`,
-						},
-					};
-					break;
-
-				default:
-					options = {
-						msgtype: 'mpnews',
-						mpnews: {
-							articles: [{
-									title: `${text}`,
-									thumb_media_id: `${QYWX_AM_AY[4]}`,
-									author: `智能助手`,
-									content_source_url: ``,
-									content: `${html}`,
-									digest: `${desp}`,
-								}, ],
-						},
-					};
-				}
-				if (!QYWX_AM_AY[4]) {
-					//如不提供第四个参数,则默认进行文本消息类型推送
-					options = {
-						msgtype: 'text',
-						text: {
-							content: `${text}\n\n${desp}`,
-						},
-					};
-				}
-				options = {
-					url: `https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=${accesstoken}`,
-					json: {
-						touser: `${ChangeUserId(desp)}`,
-						agentid: `${QYWX_AM_AY[3]}`,
-						safe: '0',
-						...options,
-					},
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				};
-
-				$.post(options, (err, resp, data) => {
-					try {
-						if (err) {
-							console.log('成员ID:' + ChangeUserId(desp) + '企业微信应用消息发送通知消息失败！！\n');
-							console.log(err);
-						} else {
-							data = JSON.parse(data);
-							if (data.errcode === 0) {
-								console.log('成员ID:' + ChangeUserId(desp) + '企业微信应用消息发送通知消息成功🎉。\n');
-							} else {
-								console.log(`${data.errmsg}\n`);
-							}
-						}
-					} catch (e) {
-						$.logErr(e, resp);
-					}
-					finally {
-						resolve(data);
-					}
-				});
-			});
-		} else {
-			resolve();
-		}
-	});
-=======
     return new Promise((resolve) => {
         if (QYWX_AM) {
             const QYWX_AM_AY = QYWX_AM.split(',');
@@ -2168,7 +2062,6 @@ function qywxamNotify(text, desp) {
             resolve();
         }
     });
->>>>>>> upstream/main
 }
 
 function iGotNotify(text, desp, params = {}) {
@@ -2216,98 +2109,6 @@ function iGotNotify(text, desp, params = {}) {
 	});
 }
 function pushPlusNotifyhxtrip(text, desp) {
-<<<<<<< HEAD
-	return new Promise((resolve) => {
-		if (PUSH_PLUS_TOKEN_hxtrip) {
-			desp = desp.replace(/[\n\r]/g, '<br>'); // 默认为html, 不支持plaintext
-			const body = {
-				token: `${PUSH_PLUS_TOKEN_hxtrip}`,
-				title: `${text}`,
-				content: `${desp}`,
-				topic: `${PUSH_PLUS_USER_hxtrip}`,
-			};
-			const options = {
-				url: `http://pushplus.hxtrip.com/send`,
-				body: JSON.stringify(body),
-				headers: {
-					'Content-Type': ' application/json',
-				},
-				timeout,
-			};
-			$.post(options, (err, resp, data) => {
-				try {
-					if (err) {
-						console.log(`hxtrip push+发送${PUSH_PLUS_USER_hxtrip ? '一对多' : '一对一'}通知消息失败！！\n`);
-						PushErrorTime += 1;
-						console.log(err);
-					} else {
-						if (data.indexOf("200") > -1) {
-							console.log(`hxtrip push+发送${PUSH_PLUS_USER_hxtrip ? '一对多' : '一对一'}通知消息完成。\n`);
-							PushErrorTime = 0;
-						} else {
-							console.log(`hxtrip push+发送${PUSH_PLUS_USER_hxtrip ? '一对多' : '一对一'}通知消息失败：${data}\n`);
-							PushErrorTime += 1;
-						}
-					}
-				} catch (e) {
-					$.logErr(e, resp);
-				}
-				finally {
-					resolve(data);
-				}
-			});
-		} else {
-			resolve();
-		}
-	});
-}
-
-function pushPlusNotify(text, desp) {
-	return new Promise((resolve) => {
-		if (PUSH_PLUS_TOKEN) {
-			desp = desp.replace(/[\n\r]/g, '<br>'); // 默认为html, 不支持plaintext
-			const body = {
-				token: `${PUSH_PLUS_TOKEN}`,
-				title: `${text}`,
-				content: `${desp}`,
-				topic: `${PUSH_PLUS_USER}`,
-			};
-			const options = {
-				url: `https://www.pushplus.plus/send`,
-				body: JSON.stringify(body),
-				headers: {
-					'Content-Type': ' application/json',
-				},
-				timeout,
-			};
-			$.post(options, (err, resp, data) => {
-				try {
-					if (err) {
-						console.log(`push+发送${PUSH_PLUS_USER ? '一对多' : '一对一'}通知消息失败！！\n`);
-						PushErrorTime += 1;
-						console.log(err);
-					} else {
-						data = JSON.parse(data);
-						if (data.code === 200) {
-							console.log(`push+发送${PUSH_PLUS_USER ? '一对多' : '一对一'}通知消息完成。\n`);
-							PushErrorTime = 0;
-						} else {
-							console.log(`push+发送${PUSH_PLUS_USER ? '一对多' : '一对一'}通知消息失败：${data.msg}\n`);
-							PushErrorTime += 1;
-						}
-					}
-				} catch (e) {
-					$.logErr(e, resp);
-				}
-				finally {
-					resolve(data);
-				}
-			});
-		} else {
-			resolve();
-		}
-	});
-=======
     return new Promise((resolve) => {
         if (PUSH_PLUS_TOKEN_hxtrip) {
             //desp = `<font size="3">${desp}</font>`;
@@ -2403,7 +2204,6 @@ function pushPlusNotify(text, desp) {
             resolve();
         }
     });
->>>>>>> upstream/main
 }
 function wxpusherNotifyByOne(text, desp, strsummary = "") {
     return new Promise((resolve) => {
@@ -2470,16 +2270,6 @@ function wxpusherNotifyByOne(text, desp, strsummary = "") {
     })
 }
 
-<<<<<<< HEAD
-function oneByoneNotify(text, desp, params) {
-	
-    return new Promise(resolve => {
-        if (ONE_BY_ONE_URL) {
-			let ptPin = params && params.pt_pin
-			if (ptPin === undefined || ptPin === null && ptPin === '') {
-				ptPin = ONE_BY_ONE_DEFAULT_PT_PIN;
-			}
-=======
 function wxpusherNotify(text, desp) {
     return new Promise((resolve) => {
         if (WP_APP_TOKEN) {
@@ -2495,7 +2285,6 @@ function wxpusherNotify(text, desp) {
             };
             desp = `<font size="4"><b>${text}</b></font>\n\n<font size="3">${desp}</font>`;
             desp = desp.replace(/[\n\r]/g, '<br>'); // 默认为html, 不支持plaintext
->>>>>>> upstream/main
             const body = {
                 appToken: `${WP_APP_TOKEN}`,
                 content: `${text}\n\n${desp}`,
