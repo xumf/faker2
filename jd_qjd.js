@@ -25,7 +25,7 @@ if ($.isNode()) {
 }
 !(async () => {
   console.log(`\n【抢京豆脚本】优先账号内部互相助力，有剩余次数再助力【zero205】\n`)
-  await getAuthorShareCode();
+  await getAuthor/ql/scripts/utils/jdShareCodes();
   if (!cookiesArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
     return;
