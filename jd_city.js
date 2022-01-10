@@ -1,6 +1,9 @@
 /*
 城城领现金
 脚本兼容: QuantumultX, Surge,Loon, JSBox, Node.js
+
+
+脚本默认助力助力池，设置环境变量export JD_CITY_HELPPOOL="false"才会内部互助
 =================================Quantumultx=========================
 [task_local]
 #城城领现金
@@ -45,7 +48,7 @@ let inviteCodes = []
   if (exchangeFlag) {
     console.log(`脚本自动抽奖`)
   } else {
-    console.log(`脚本不会自动抽奖，建议活动快结束开启，默认关闭(在10.29日自动开启抽奖),如需自动抽奖请设置环境变量  JD_CITY_EXCHANGE 为true`);
+    console.log(`脚本默认助力助力池，设置环境变量export JD_CITY_HELPPOOL="false"才会内部互助。上车 不会自动抽奖，建议活动快结束开启，默认关闭,如需自动抽奖请设置环境变量  JD_CITY_EXCHANGE 为true`);
   }
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
