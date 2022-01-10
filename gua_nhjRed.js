@@ -60,7 +60,7 @@ let nowTime = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*
     $.shareCodeArr = {}
     $.shareCodeArr["flag"] = true
   }
-  const flCodeArr = ["SLI8zFT", "SIMHz54", "StIuUgG"];
+  const flCodeArr = ["SMqpkob"];
   try{
     for (let i = 0; i < cookiesArr.length; i++) {
       rebateCode = rebateCodes ? rebateCodes : flCodeArr[Math.floor(Math.random() * flCodeArr.length)];
@@ -381,7 +381,7 @@ function getUrl1() {
 
 function getUrl() {
   return new Promise(resolve => {
-    if($.again == true) rebateCode = 'S'+'C'+'L'+'y'+'Q'+'i'+'4'
+    if($.again == true) rebateCode = 'SMqpkob'
     const options = {
       url: `https://u.jd.com/${rebateCode}${$.shareCode && "?s="+$.shareCode || ""}`,
       followRedirect:false,
