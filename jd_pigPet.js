@@ -28,7 +28,7 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 let UA = $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
-let shareId = 'KMnydTyM9ezAduo1QsTZZsAdoUJQ3Dik'
+let shareId = ''
 $.shareCodes = [];
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
@@ -46,14 +46,6 @@ if ($.isNode()) {
   }
   if (process.env.PIGPETSHARECODE) {
     shareId = process.env.PIGPETSHARECODE
-  } else{
-    let res = await getAuthorShareCode('https://raw.githubusercontent.com/zero205/updateTeam/main/shareCodes/pigPet.json')
-    if (!res) {
-      res = await getAuthorShareCode('https://raw.fastgit.org/zero205/updateTeam/main/shareCodes/pigPet.json')
-    }
-    if (res){
-      shareId = res[Math.floor((Math.random() * res.length))];
-    }
   }
   console.log(`\n【原作者：LXK大佬】\n\nBy：zero205\n添加：邀请新用户，大转盘助力，抢粮食\n修改：优化日志输出，自动喂食\n\n默认不抢粮食（成功机率小），需要的请添加变量JD_PIGPET_PK，值填true\nTodo：领取成就奖励\n`);
   for (let i = 0; i < cookiesArr.length; i++) {
@@ -77,8 +69,6 @@ if ($.isNode()) {
     }
   }
   console.log(`\n======开始大转盘助力======\n`);
-  $.helpId = await getAuthorShareCode('https://raw.fastgit.org/zero205/updateTeam/main/shareCodes/pig.json');
-  $.shareCodes = [...$.shareCodes, ...($.helpId || [])]
   for (let j = 0; j < cookiesArr.length; j++) {
     cookie = cookiesArr[j];
     if ($.shareCodes && $.shareCodes.length) {
@@ -871,27 +861,6 @@ function finishReadMission(missionId, readTime) {
         resolve();
       }
     })
-  })
-}
-
-function getAuthorShareCode(url) {
-  return new Promise(async resolve => {
-    const options = {
-      url: `${url}?${new Date()}`, "timeout": 10000, headers: {
-        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
-      }
-    };
-    $.get(options, async (err, resp, data) => {
-      try {
-        resolve(JSON.parse(data))
-      } catch (e) {
-        // $.logErr(e, resp)
-      } finally {
-        resolve();
-      }
-    })
-    await $.wait(10000)
-    resolve();
   })
 }
 

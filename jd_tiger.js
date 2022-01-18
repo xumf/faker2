@@ -65,30 +65,10 @@ Object.keys(jdCookieNode).forEach((item) => {
             console.log('黑号？', e)
         }
     }
-    let authorCode = []
-    let res = await getAuthorShareCode('https://raw.githubusercontent.com/zero205/updateTeam/main/shareCodes/tiger.json')
-    if (!res) {
-        res = await getAuthorShareCode('https://raw.fastgit.org/zero205/updateTeam/main/shareCodes/tiger.json')
-    }
-    if (res) {
-        authorCode = res.sort(() => 0.5 - Math.random())
-        const limit = 3
-        if (authorCode.length > limit) {
-            authorCode = authorCode.splice(0, limit)
-        }
-    }
     for (let i = 0; i < cookiesArr.length; i++) {
         cookie = cookiesArr[i]
         const userName = decodeURIComponent(cookie.match(/pt_pin=(.+?);/) && cookie.match(/pt_pin=(.+?);/)[1])
-        const pool = await getShareCodePool('tiger', 5)
-        // if (shareCodesHW.length === 0) {
-        //     shareCodesHW = await getshareCodeHW('tiger')
-        // }
-        // index === 0 ?
-        //     shareCodes = Array.from(new Set([...shareCodesHW, ...shareCodesSelf, ...temp])) :
-        //     shareCodes = Array.from(new Set([...shareCodesSelf, ...shareCodesHW, ...temp]))
-        shareCodes = Array.from(new Set([...shareCodesSelf, ...authorCode, ...pool]))
-        // console.log(shareCodes)
+        shareCodes = shareCodesSelf
         for (let code of shareCodes) {
             console.log(`账号${i + 1} 去助力 ${code} ${shareCodesSelf.includes(code) ? '(内部)' : ''}`)
             try {
@@ -137,25 +117,6 @@ Object.keys(jdCookieNode).forEach((item) => {
     console.log(`${name} finished}`)
 })
 
-async function getAuthorShareCode(url) {
-    try {
-        const options = {
-            url,
-            "timeout": 10000,
-            headers: {
-                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
-            }
-        };
-        const { body } = await got(options)
-        // console.debug('getAuthorShareCode:',body)
-        return JSON.parse(body) || []
-    } catch (e) {
-        // console.warn('getAuthorShareCode:', e)
-        return false
-    }
-
-}
-
 function wait(time) {
     return new Promise(resolve => {
         setTimeout(() => {
@@ -190,27 +151,6 @@ async function api(r_body) {
     // console.log(body)
     return JSON.parse(body)
 }
-
-async function getShareCodePool(key, num) {
-    let shareCode = []
-    for (let i = 0; i < 2; i++) {
-        try {
-            const { body } = await got(`https://api.jdsharecode.xyz/api/${key}/${num}`)
-            console.debug('getShareCodePool:', body)
-            shareCode = JSON.parse(body).data || []
-            console.log(`随机获取${num}个${key}成功：${JSON.stringify(shareCode)}`)
-            if (shareCode.length !== 0) {
-                break
-            }
-        } catch (e) {
-            // console.warn(e.stack)
-            console.log("getShareCodePool Error, Retry...")
-            await wait(2000 + Math.floor((Math.random() * 4000)))
-        }
-    }
-    return shareCode
-}
-
 
 async function getTaskDetail(taskGroupId) {
     let res = await api({ "taskGroupId": taskGroupId, "apiMapping": "/api/task/brand/getTaskList" })

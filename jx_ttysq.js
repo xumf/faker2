@@ -57,26 +57,6 @@ const JD_API_HOST = `https://m.jingxi.com`;
             }
         }
     }
-    let res = await getAuthorShareCode('https://raw.githubusercontent.com/shufflewzc/updateTeam/main/shareCodes/ttysq2.json')
-    if (!res) {
-        res = await getAuthorShareCode('https://raw.fastgit.org/shufflewzc/updateTeam/main/shareCodes/ttysq2.json')
-    }
-    if (res) {
-        authorCode = res.sort(() => 0.5 - Math.random())
-        if (authorCode.length > 3) {
-            authorCode = authorCode.splice(0, 3)
-        }
-        authorCode = authorCode.map(entity => {
-            return {
-                "user": "author",
-                "code": entity.code,
-                "redId": entity.rpids[Math.floor((Math.random() * entity.rpids.length))],
-                "beHelp": 0,
-                "helpId": $.taskId
-            }
-        })
-        $.shareCoseList = [...$.shareCoseList, ...authorCode]
-    }
     console.log(`要助力的助理码${JSON.stringify($.shareCoseList.length)}个\n`)
     //助力任务
     for (let i = 0; i < cookiesArr.length; i++) {
@@ -151,29 +131,6 @@ const JD_API_HOST = `https://m.jingxi.com`;
 })()
 .catch((e) => $.logErr(e))
 .finally(() => $.done())
-
-function getAuthorShareCode(url) {
-    return new Promise(async resolve => {
-        const options = {
-            url: `${url}?${new Date()}`,
-            "timeout": 10000,
-            headers: {
-                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
-            }
-        };
-        $.get(options, async (err, resp, data) => {
-            try {
-                resolve(JSON.parse(data))
-            } catch (e) {
-                // $.logErr(e, resp)
-            } finally {
-                resolve();
-            }
-        })
-        await $.wait(10000)
-        resolve();
-    })
-}
 
 async function main() {
     try {
